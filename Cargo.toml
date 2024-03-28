@@ -1,0 +1,13 @@
+[package]
+name = "xkb-data"
+version = "0.1.0"
+edition = "2021"
+license = "MPL-2.0"
+homepage = "https://github.com/pop-os/xkb-data"
+description = "Keyboard layout data from xkb-data"
+categories = [ "os::unix-apis" ]
+keywords = [ "xkd" ]
+
+[dependencies]
+serde-xml-rs = "0.6.0"
+serde = { version = "1.0.197", features = ["derive"] }
