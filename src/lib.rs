@@ -88,14 +88,24 @@ pub fn get_keyboard_layouts(path: &str) -> io::Result<KeyboardLayouts> {
         .map_err(|why| io::Error::new(io::ErrorKind::InvalidData, format!("{}", why)))
 }
 
-/// Fetches a list of keyboard layouts from `/usr/share/X11/xkb/rules/base.xml`.
+/// Fetches a list of keyboard layouts from `/usr/share/X11/xkb/rules/base.xml` or the file defined in the X11_BASE_RULES_XML environment variable.
 pub fn keyboard_layouts() -> io::Result<KeyboardLayouts> {
-    get_keyboard_layouts(X11_BASE_RULES)
+    if let Ok(x11_base_rules_xml) = std::env::var("X11_BASE_RULES_XML") {
+        get_keyboard_layouts(&x11_base_rules_xml)
+    }
+    else {
+        get_keyboard_layouts(X11_BASE_RULES)
+    }
 }
 
-/// Fetches a list of keyboard layouts from `/usr/share/X11/xkb/rules/base.extras.xml`.
+/// Fetches a list of keyboard layouts from `/usr/share/X11/xkb/rules/base.extras.xml` or the file defined in the X11_EXTRA_RULES_XML environment variable.
 pub fn extra_keyboard_layouts() -> io::Result<KeyboardLayouts> {
-    get_keyboard_layouts(X11_EXTRAS_RULES)
+    if let Ok(x11_extra_rules_xml) = std::env::var("X11_EXTRA_RULES_XML") {
+        get_keyboard_layouts(&x11_extra_rules_xml)
+    }
+    else {
+        get_keyboard_layouts(X11_EXTRAS_RULES)
+    }
 }
 
 /// Fetches a list of keyboard layouts from `/usr/share/X11/xkb/rules/base.xml` and
