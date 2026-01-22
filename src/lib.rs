@@ -31,10 +31,14 @@ pub struct KeyboardLayouts {
 
 impl KeyboardLayouts {
     /// Fetch the layouts from the layout list.
-    pub fn layouts(&self) -> &[KeyboardLayout] { &self.layout_list.layout }
+    pub fn layouts(&self) -> &[KeyboardLayout] {
+        &self.layout_list.layout
+    }
 
     /// Fetch the layouts from the layout list.
-    pub fn layouts_mut(&mut self) -> &mut [KeyboardLayout] { &mut self.layout_list.layout }
+    pub fn layouts_mut(&mut self) -> &mut [KeyboardLayout] {
+        &mut self.layout_list.layout
+    }
 }
 
 /// A list of keyboard layouts.
@@ -47,17 +51,21 @@ pub struct LayoutList {
 #[derive(Debug, Deserialize, Clone)]
 pub struct KeyboardLayout {
     #[serde(rename = "configItem")]
-    pub config_item:  ConfigItem,
+    pub config_item: ConfigItem,
     #[serde(rename = "variantList")]
     pub variant_list: Option<VariantList>,
 }
 
 impl KeyboardLayout {
     /// Fetches the name of the keyboard layout.
-    pub fn name(&self) -> &str { &self.config_item.name }
+    pub fn name(&self) -> &str {
+        &self.config_item.name
+    }
 
     /// Fetches a description of the layout.
-    pub fn description(&self) -> &str { &self.config_item.description }
+    pub fn description(&self) -> &str {
+        &self.config_item.description
+    }
 
     /// Fetches a list of possible layout variants.
     pub fn variants(&self) -> Option<&Vec<KeyboardVariant>> {
@@ -68,10 +76,10 @@ impl KeyboardLayout {
 /// Contains the name and description of a keyboard layout.
 #[derive(Debug, Deserialize, Clone)]
 pub struct ConfigItem {
-    pub name:              String,
+    pub name: String,
     #[serde(rename = "shortDescription")]
     pub short_description: Option<String>,
-    pub description:       String,
+    pub description: String,
 }
 
 /// A list of possible variants of a keyboard layout.
@@ -89,10 +97,14 @@ pub struct KeyboardVariant {
 
 impl KeyboardVariant {
     /// The name of this variant of a keybaord layout.
-    pub fn name(&self) -> &str { &self.config_item.name }
+    pub fn name(&self) -> &str {
+        &self.config_item.name
+    }
 
     /// A description of this variant of a keyboard layout.
-    pub fn description(&self) -> &str { &self.config_item.description }
+    pub fn description(&self) -> &str {
+        &self.config_item.description
+    }
 }
 
 /// Fetches a list of keyboard layouts from a path.
@@ -105,8 +117,7 @@ pub fn get_keyboard_layouts(path: &str) -> io::Result<KeyboardLayouts> {
 pub fn keyboard_layouts() -> io::Result<KeyboardLayouts> {
     if let Ok(x11_base_rules_xml) = std::env::var("X11_BASE_RULES_XML") {
         get_keyboard_layouts(&x11_base_rules_xml)
-    }
-    else {
+    } else {
         get_keyboard_layouts(X11_BASE_RULES)
     }
 }
@@ -115,8 +126,7 @@ pub fn keyboard_layouts() -> io::Result<KeyboardLayouts> {
 pub fn extra_keyboard_layouts() -> io::Result<KeyboardLayouts> {
     if let Ok(x11_extra_rules_xml) = std::env::var("X11_EXTRA_RULES_XML") {
         get_keyboard_layouts(&x11_extra_rules_xml)
-    }
-    else {
+    } else {
         get_keyboard_layouts(X11_EXTRAS_RULES)
     }
 }
@@ -197,7 +207,7 @@ pub fn all_keyboard_layouts() -> io::Result<KeyboardLayouts> {
 
 fn merge_rules(base: KeyboardLayouts, extras: KeyboardLayouts) -> KeyboardLayouts {
     KeyboardLayouts {
-        layout_list: concat_layout_lists(vec![base.layout_list, extras.layout_list])
+        layout_list: concat_layout_lists(vec![base.layout_list, extras.layout_list]),
     }
 }
 
@@ -206,5 +216,7 @@ fn concat_layout_lists(layouts: Vec<LayoutList>) -> LayoutList {
     for layout_list in layouts.into_iter() {
         new_layouts.extend(layout_list.layout);
     }
-    return LayoutList { layout: new_layouts }
+    return LayoutList {
+        layout: new_layouts,
+    };
 }
