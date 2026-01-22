@@ -11,12 +11,12 @@ fn main() {
         }
         count += 1;
     }
-
     println!("Total layouts without extra sources: {}", count);
 
-    count = 0;
-    let all_layouts = xkb_data::all_keyboard_layouts().unwrap();
-    for layout in all_layouts.layouts() {
+    println!("user-provided layouts");
+    let layouts = xkb_data::user_keyboard_layouts().unwrap();
+    let mut count = 0;
+    for layout in layouts.layouts() {
         println!("  {}: {}", layout.name(), layout.description());
         if let Some(variants) = layout.variants() {
             for variant in variants {
@@ -25,5 +25,12 @@ fn main() {
         }
         count += 1;
     }
-    println!("Total layouts including extra sources: {}", count);
+    println!("Total user-provided layouts: {}", count);
+
+    count = 0;
+    let all_layouts = xkb_data::all_keyboard_layouts().unwrap();
+    for layout in all_layouts.layouts() {
+        count += 1;
+    }
+    println!("Total layouts including extra sources and user layouts: {}", count);
 }
